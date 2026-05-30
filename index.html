@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing Inclusive Digital Assessments for Diverse Learners</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber: #c87d3a;
+    --cream: #f6d7a7;
+    --mint: #c0e1d2;
+    --slate-blue: #9cc3cd;
+    --navy: #424e63;
+    --amber-light: #e8a96a;
+    --cream-dark: #e8c080;
+    --mint-dark: #8fc4b0;
+    --white: #fefcf8;
+    --text-dark: #2a3040;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    width: 260px; height: 100vh;
+    background: var(--navy);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(.77,0,.18,1);
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .sidebar-logo .logo-tag {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--slate-blue);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-logo .logo-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.4;
+  }
+
+  .nav-links {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+
+  .nav-links::-webkit-scrollbar { width: 3px; }
+  .nav-links::-webkit-scrollbar-thumb { background: var(--slate-blue); }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+  }
+
+  .nav-item:hover {
+    background: rgba(156,195,205,0.12);
+    border-left-color: var(--slate-blue);
+  }
+
+  .nav-item.active {
+    background: rgba(200,125,58,0.18);
+    border-left-color: var(--amber);
+  }
+
+  .nav-item .nav-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    background: rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .nav-icon { background: var(--amber); }
+
+  .nav-item .nav-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(246,215,167,0.8);
+    line-height: 1.3;
+  }
+
+  .nav-item.active .nav-label { color: var(--cream); }
+
+  .nav-item .nav-time {
+    font-size: 11px;
+    color: rgba(156,195,205,0.6);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: var(--slate-blue);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber), var(--cream-dark));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+    width: 0%;
+  }
+
+  .progress-text {
+    font-size: 11px;
+    color: rgba(246,215,167,0.5);
+    margin-top: 6px;
+  }
+
+  /* ─── HAMBURGER ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 16px; left: 16px;
+    z-index: 200;
+    background: var(--navy);
+    border: none;
+    cursor: pointer;
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 20px; height: 2px;
+    background: var(--cream);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 80px 60px;
+  }
+
+  .hero-bg-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .shape-1 {
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,125,58,0.25) 0%, transparent 70%);
+  }
+
+  .shape-2 {
+    position: absolute;
+    bottom: -100px; left: 200px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(156,195,205,0.2) 0%, transparent 70%);
+  }
+
+  .shape-3 {
+    position: absolute;
+    top: 40%; right: 15%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(192,225,210,0.15) 0%, transparent 70%);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200,125,58,0.2);
+    border: 1px solid rgba(200,125,58,0.4);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--amber-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 68px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.08;
+    max-width: 780px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--amber-light);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: rgba(246,215,167,0.7);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 52px;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .meta-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(192,225,210,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .meta-text strong {
+    display: block;
+    font-size: 15px;
+    color: var(--cream);
+    font-weight: 600;
+  }
+
+  .meta-text span {
+    font-size: 12px;
+    color: rgba(156,195,205,0.7);
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--amber);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 16px 32px;
+    border-radius: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+    width: fit-content;
+  }
+
+  .hero-cta:hover {
+    background: var(--amber-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(200,125,58,0.4);
+  }
+
+  .objectives-strip {
+    margin-top: 64px;
+    padding: 28px 36px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+  }
+
+  .objectives-strip h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--slate-blue);
+    margin-bottom: 18px;
+  }
+
+  .obj-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .obj-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(246,215,167,0.8);
+    line-height: 1.5;
+  }
+
+  .obj-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  /* ─── CONTENT PAGES ─── */
+  .content-page {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .page-hero {
+    padding: 60px 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero.amber-hero { background: linear-gradient(135deg, var(--amber) 0%, #b56a27 100%); }
+  .page-hero.mint-hero { background: linear-gradient(135deg, var(--mint-dark) 0%, #6aab95 100%); }
+  .page-hero.slate-hero { background: linear-gradient(135deg, var(--slate-blue) 0%, #6da4b0 100%); }
+  .page-hero.navy-hero { background: linear-gradient(135deg, var(--navy) 0%, #333d52 100%); }
+  .page-hero.final-hero { background: linear-gradient(135deg, #5a6880 0%, var(--navy) 100%); }
+
+  .page-hero::after {
+    content: attr(data-num);
+    position: absolute;
+    right: 60px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.07);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .page-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 16px;
+  }
+
+  .page-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+    max-width: 600px;
+    margin-bottom: 14px;
+  }
+
+  .page-hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    max-width: 540px;
+    line-height: 1.65;
+  }
+
+  .page-time-badge {
+    position: absolute;
+    top: 24px; right: 80px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .content-body {
+    padding: 56px 80px 80px;
+  }
+
+  /* ─── CARD COMPONENTS ─── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  .section-text {
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.75;
+    margin-bottom: 20px;
+    max-width: 680px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin: 32px 0;
+  }
+
+  .info-card {
+    background: var(--white);
+    border: 1px solid rgba(66,78,99,0.08);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 12px rgba(66,78,99,0.06);
+  }
+
+  .info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(66,78,99,0.12);
+    border-color: var(--slate-blue);
+  }
+
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .card-icon.amber { background: rgba(200,125,58,0.12); }
+  .card-icon.mint { background: rgba(192,225,210,0.3); }
+  .card-icon.slate { background: rgba(156,195,205,0.25); }
+  .card-icon.cream { background: rgba(246,215,167,0.4); }
+
+  .info-card h4 {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .info-card p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  /* ─── HIGHLIGHT BOX ─── */
+  .highlight-box {
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 28px 0;
+  }
+
+  .highlight-box.amber-box {
+    background: rgba(200,125,58,0.08);
+    border-left: 4px solid var(--amber);
+  }
+
+  .highlight-box.mint-box {
+    background: rgba(192,225,210,0.25);
+    border-left: 4px solid var(--mint-dark);
+  }
+
+  .highlight-box.slate-box {
+    background: rgba(156,195,205,0.2);
+    border-left: 4px solid var(--slate-blue);
+  }
+
+  .highlight-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .highlight-box p {
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.7;
+  }
+
+  /* ─── UDL PRINCIPLES ─── */
+  .udl-principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 32px 0;
+  }
+
+  .principle-card {
+    border-radius: 18px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .principle-card::before {
+    content: attr(data-num);
+    position: absolute;
+    bottom: -10px; right: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    opacity: 0.1;
+    color: white;
+  }
+
+  .principle-card.p1 { background: var(--amber); }
+  .principle-card.p2 { background: var(--mint-dark); }
+  .principle-card.p3 { background: var(--slate-blue); }
+
+  .principle-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .principle-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.65;
+  }
+
+  .principle-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 8px;
+  }
+
+  /* ─── BARRIER LIST ─── */
+  .barrier-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 24px 0;
+  }
+
+  .barrier-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid rgba(66,78,99,0.08);
+    box-shadow: 0 2px 8px rgba(66,78,99,0.04);
+  }
+
+  .barrier-num {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--navy);
+    color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .barrier-content h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .barrier-content p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.55;
+  }
+
+  /* ─── CHECKLIST ─── */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.55;
+  }
+
+  .check-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--mint);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #2a6a55;
+    font-weight: 700;
+  }
+
+  /* ─── STRATEGY CARDS ─── */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin: 28px 0;
+  }
+
+  .strategy-card {
+    background: linear-gradient(135deg, rgba(246,215,167,0.3) 0%, rgba(192,225,210,0.2) 100%);
+    border: 1px solid rgba(200,125,58,0.2);
+    border-radius: 16px;
+    padding: 22px;
+  }
+
+  .strategy-card .s-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--amber);
+    opacity: 0.5;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .strategy-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .strategy-card p {
+    font-size: 13px;
+    color: #5a6478;
+    line-height: 1.6;
+  }
+
+  /* ─── FORMATIVE ASSESSMENT ─── */
+  .formative-section {
+    background: var(--navy);
+    border-radius: 20px;
+    padding: 36px;
+    margin: 40px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .formative-section::before {
+    content: '✏';
+    position: absolute;
+    right: 30px; top: 20px;
+    font-size: 80px;
+    opacity: 0.06;
+  }
+
+  .formative-badge {
+    display: inline-block;
+    background: var(--amber);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+  }
+
+  .formative-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .formative-section p {
+    font-size: 14px;
+    color: rgba(246,215,167,0.75);
+    line-height: 1.65;
+    margin-bottom: 20px;
+    max-width: 580px;
+  }
+
+  .form-embed-prompt {
+    background: rgba(255,255,255,0.06);
+    border: 1px dashed rgba(156,195,205,0.4);
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .form-icon { font-size: 28px; }
+
+  .form-embed-prompt div h5 {
+    font-size: 14px;
+    color: var(--cream);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .form-embed-prompt div p {
+    font-size: 12px;
+    color: rgba(156,195,205,0.7);
+    margin-bottom: 0;
+  }
+
+  .form-btn {
+    margin-left: auto;
+    background: var(--amber);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .form-btn:hover { background: var(--amber-light); }
+
+  /* ─── VIDEO EMBED ─── */
+  .video-container {
+    background: var(--navy);
+    border-radius: 18px;
+    overflow: hidden;
+    margin: 28px 0;
+    position: relative;
+  }
+
+  .video-placeholder {
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+    background: linear-gradient(135deg, rgba(66,78,99,0.9) 0%, rgba(42,48,64,0.95) 100%);
+  }
+
+  .play-btn {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--amber);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .play-btn:hover { transform: scale(1.1); }
+
+  .video-label {
+    font-size: 13px;
+    color: rgba(246,215,167,0.7);
+    text-align: center;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(66,78,99,0.12), transparent);
+    margin: 40px 0;
+  }
+
+  /* ─── FINAL PAGE ─── */
+  .takeaway-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .takeaway-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 22px;
+    border: 1px solid rgba(66,78,99,0.08);
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(66,78,99,0.06);
+    transition: all 0.3s;
+  }
+
+  .takeaway-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(66,78,99,0.12);
+  }
+
+  .takeaway-card .t-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .takeaway-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .takeaway-card p {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  /* ─── REFLECTION BOX ─── */
+  .reflection-box {
+    background: linear-gradient(135deg, var(--cream) 0%, rgba(246,215,167,0.5) 100%);
+    border-radius: 20px;
+    padding: 36px;
+    margin: 32px 0;
+  }
+
+  .reflection-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .reflection-box p {
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  textarea.reflect-input {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(66,78,99,0.15);
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.25s;
+  }
+
+  textarea.reflect-input:focus { border-color: var(--amber); }
+
+  .submit-reflect-btn {
+    margin-top: 14px;
+    background: var(--navy);
+    color: var(--cream);
+    border: none;
+    border-radius: 12px;
+    padding: 13px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .submit-reflect-btn:hover {
+    background: var(--amber);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* ─── NEXT PAGE BTN ─── */
+  .page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 80px 48px;
+    border-top: 1px solid rgba(66,78,99,0.08);
+  }
+
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-btn.prev {
+    background: rgba(66,78,99,0.08);
+    color: var(--navy);
+  }
+
+  .nav-btn.prev:hover { background: rgba(66,78,99,0.14); }
+
+  .nav-btn.next {
+    background: var(--amber);
+    color: white;
+  }
+
+  .nav-btn.next:hover {
+    background: var(--amber-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(200,125,58,0.35);
+  }
+
+  /* ─── SCENARIO ACTIVITY ─── */
+  .scenario-box {
+    background: var(--white);
+    border: 1.5px solid rgba(66,78,99,0.1);
+    border-radius: 18px;
+    padding: 28px;
+    margin: 24px 0;
+    box-shadow: 0 4px 16px rgba(66,78,99,0.06);
+  }
+
+  .scenario-box h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  .scenario-box .scenario-text {
+    background: rgba(246,215,167,0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.65;
+    margin-bottom: 16px;
+    border-left: 3px solid var(--amber);
+  }
+
+  .barrier-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .barrier-opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(66,78,99,0.1);
+    cursor: pointer;
+    transition: all 0.25s;
+    font-size: 13px;
+    color: var(--navy);
+  }
+
+  .barrier-opt input[type="checkbox"] { accent-color: var(--amber); width: 16px; height: 16px; }
+
+  .barrier-opt:hover { border-color: var(--amber); background: rgba(200,125,58,0.04); }
+
+  .check-answers-btn {
+    margin-top: 16px;
+    background: var(--slate-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .check-answers-btn:hover { background: #7bb0bc; }
+
+  .feedback-msg {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: none;
+  }
+
+  .feedback-msg.show { display: block; }
+  .feedback-msg.correct { background: rgba(192,225,210,0.4); color: #2a6a55; border: 1px solid var(--mint); }
+  .feedback-msg.partial { background: rgba(246,215,167,0.4); color: #7a5a20; border: 1px solid var(--cream-dark); }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+    margin: 28px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--amber), var(--slate-blue));
+    border-radius: 2px;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+    padding-left: 20px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px; top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 2px var(--amber);
+  }
+
+  .timeline-item h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .timeline-item p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  /* ─── INFOGRAPHIC ─── */
+  .infographic {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    border-radius: 18px;
+    overflow: hidden;
+    margin: 28px 0;
+  }
+
+  .infographic-cell {
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .infographic-cell:nth-child(1) { background: rgba(200,125,58,0.12); }
+  .infographic-cell:nth-child(2) { background: rgba(192,225,210,0.3); }
+  .infographic-cell:nth-child(3) { background: rgba(156,195,205,0.25); }
+  .infographic-cell:nth-child(4) { background: rgba(156,195,205,0.25); }
+  .infographic-cell:nth-child(5) { background: rgba(246,215,167,0.35); }
+  .infographic-cell:nth-child(6) { background: rgba(200,125,58,0.12); }
+
+  .infographic-cell .stat {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .infographic-cell .stat-label {
+    font-size: 12px;
+    color: #5a6478;
+    line-height: 1.4;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-260px); }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-left: 0; }
+    .hamburger { display: flex; }
+    .page-hero, .content-body { padding-left: 40px; padding-right: 40px; }
+    .hero { padding: 80px 40px 60px; }
+    .page-nav { padding: 24px 40px 40px; }
+    .udl-principles { grid-template-columns: 1fr; }
+    .infographic { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .page-hero, .content-body { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 80px 20px 50px; }
+    .page-nav { padding: 20px 20px 36px; flex-direction: column; gap: 12px; }
+    .nav-btn { width: 100%; justify-content: center; }
+    .hero-meta { gap: 18px; }
+    .page-hero::after { display: none; }
+  }
+
+  /* ─── FORM MODAL ─── */
+  .form-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30,36,50,0.72);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+
+  .form-modal-overlay.open { display: flex; }
+
+  .form-modal {
+    background: var(--white);
+    border-radius: 22px;
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 32px 80px rgba(30,36,50,0.35);
+    overflow: hidden;
+    animation: modalIn 0.35s cubic-bezier(.34,1.56,.64,1) forwards;
+    position: relative;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.88) translateY(24px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .form-modal-header {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid rgba(66,78,99,0.1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .form-modal-header-left { flex: 1; }
+
+  .form-modal-badge {
+    display: inline-block;
+    background: var(--amber);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+
+  .form-modal-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--navy);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .form-modal-header p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.55;
+  }
+
+  .form-modal-close {
+    background: rgba(66,78,99,0.08);
+    border: none;
+    border-radius: 10px;
+    width: 36px; height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--navy);
+    flex-shrink: 0;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .form-modal-close:hover { background: rgba(200,125,58,0.15); color: var(--amber); }
+
+  .form-modal-body {
+    padding: 24px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form-modal-prompt {
+    background: linear-gradient(135deg, rgba(246,215,167,0.35) 0%, rgba(192,225,210,0.2) 100%);
+    border-radius: 14px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--amber);
+  }
+
+  .form-modal-prompt .prompt-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+
+  .form-modal-prompt p {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .form-modal-instructions {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+    padding: 0 2px;
+  }
+
+  .form-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .modal-open-btn {
+    flex: 1;
+    background: var(--amber);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .modal-open-btn:hover {
+    background: var(--amber-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(200,125,58,0.3);
+  }
+
+  .modal-cancel-btn {
+    background: rgba(66,78,99,0.08);
+    color: var(--navy);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .modal-cancel-btn:hover { background: rgba(66,78,99,0.14); }
+
+  .form-modal-tip {
+    font-size: 12px;
+    color: #9ca3af;
+    text-align: center;
+    padding-top: 2px;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page.active .page-hero,
+  .page.active .content-body {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+  }
+  .overlay.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-tag">D301 Capstone</span>
+    <span class="logo-title">Inclusive Digital Assessments</span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-item active" data-page="home" onclick="showPage('home', this)">
+      <div class="nav-icon">🏠</div>
+      <span class="nav-label">Welcome & Overview</span>
+      <span class="nav-time">5 min</span>
+    </a>
+    <a class="nav-item" data-page="page1" onclick="showPage('page1', this)">
+      <div class="nav-icon">📖</div>
+      <span class="nav-label">Introduction to Inclusive Assessment</span>
+      <span class="nav-time">15 min</span>
+    </a>
+    <a class="nav-item" data-page="page2" onclick="showPage('page2', this)">
+      <div class="nav-icon">🔵</div>
+      <span class="nav-label">UDL Principles</span>
+      <span class="nav-time">15 min</span>
+    </a>
+    <a class="nav-item" data-page="page3" onclick="showPage('page3', this)">
+      <div class="nav-icon">🚧</div>
+      <span class="nav-label">Accessibility Barriers</span>
+      <span class="nav-time">15 min</span>
+    </a>
+    <a class="nav-item" data-page="page4" onclick="showPage('page4', this)">
+      <div class="nav-icon">🎨</div>
+      <span class="nav-label">Designing Inclusive Assessments</span>
+      <span class="nav-time">20 min</span>
+    </a>
+    <a class="nav-item" data-page="page5" onclick="showPage('page5', this)">
+      <div class="nav-icon">🎓</div>
+      <span class="nav-label">Final Reflection & Assessment</span>
+      <span class="nav-time">15 min</span>
+    </a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="progress-label">Your Progress</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 of 5 modules complete</div>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- FORM MODAL -->
+<div class="form-modal-overlay" id="formModal" onclick="closeFormModal(event)">
+  <div class="form-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="form-modal-header">
+      <div class="form-modal-header-left">
+        <div class="form-modal-badge" id="modalBadge">Formative Assessment</div>
+        <h3 id="modalTitle">Assessment Title</h3>
+        <p id="modalSubtitle">Assessment subtitle</p>
+      </div>
+      <button class="form-modal-close" onclick="closeFormModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="form-modal-body">
+      <div class="form-modal-prompt">
+        <div class="prompt-label">Your Prompt</div>
+        <p id="modalPrompt">Prompt text here.</p>
+      </div>
+      <p class="form-modal-instructions" id="modalInstructions">Click the button below to open the Google Form in a new tab. Complete the form and return here to continue to the next module.</p>
+      <div class="form-modal-actions">
+        <button class="modal-open-btn" id="modalOpenBtn" onclick="openFormUrl()">
+          Open Google Form &nbsp;↗
+        </button>
+        <button class="modal-cancel-btn" onclick="closeFormModal()">Cancel</button>
+      </div>
+      <p class="form-modal-tip">The form will open in a new tab. Return here when you're done.</p>
+    </div>
+  </div>
+</div>
+
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Toggle menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-bg-shapes">
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+        <div class="shape-3"></div>
+      </div>
+      <div class="hero-badge">✦ WGU Capstone D301 &nbsp;·&nbsp; E-Learning Module</div>
+      <h1>Designing <em>Inclusive</em> Digital Assessments for Diverse Learners</h1>
+      <p class="hero-desc">An asynchronous professional development module exploring universal design, accessibility, and equitable assessment practices for today's diverse classrooms.</p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-icon">⏱</div>
+          <div class="meta-text">
+            <strong>60–75 Minutes</strong>
+            <span>Total engagement time</span>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">📚</div>
+          <div class="meta-text">
+            <strong>5 Learning Modules</strong>
+            <span>Self-paced progression</span>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">✅</div>
+          <div class="meta-text">
+            <strong>4 Formative + 1 Summative</strong>
+            <span>Embedded assessments</span>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">🏆</div>
+          <div class="meta-text">
+            <strong>K–12 Educators</strong>
+            <span>Target audience</span>
+          </div>
+        </div>
+      </div>
+      <button class="hero-cta" onclick="showPage('page1', document.querySelector('[data-page=page1]'))">
+        Begin Module &nbsp; →
+      </button>
+      <div class="objectives-strip">
+        <h3>Learning Objectives</h3>
+        <div class="obj-grid">
+          <div class="obj-item"><div class="obj-dot"></div>Explain the principles of inclusive digital assessment design</div>
+          <div class="obj-item"><div class="obj-dot"></div>Apply UDL principles to digital assessment contexts</div>
+          <div class="obj-item"><div class="obj-dot"></div>Identify accessibility barriers in existing assessments</div>
+          <div class="obj-item"><div class="obj-dot"></div>Design differentiated, accessible assessment alternatives</div>
+          <div class="obj-item"><div class="obj-dot"></div>Develop an implementation plan for inclusive assessment practices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 1 -->
+  <div class="page" id="page-page1">
+    <div class="content-page">
+      <div class="page-hero amber-hero" data-num="1">
+        <div class="page-time-badge">⏱ 10–15 min</div>
+        <div class="page-badge">Module 1</div>
+        <h2>Introduction to Inclusive Digital Assessment</h2>
+        <p>Explore the foundations of equitable assessment and why learner variability demands flexible, accessible digital tools.</p>
+      </div>
+      <div class="content-body">
+        <div class="section-label">What is Inclusive Assessment?</div>
+        <h2 class="section-title">Understanding Learner Variability</h2>
+        <p class="section-text">Inclusive digital assessment refers to the design and delivery of assessments that account for the diverse needs, abilities, and learning profiles of all students. Unlike traditional one-size-fits-all assessments, inclusive designs proactively remove barriers so that all learners can demonstrate their knowledge.</p>
+        <p class="section-text">Research shows that learner variability is the rule, not the exception. Students differ in how they perceive information, how they engage with content, and how they express what they know — and digital assessments must accommodate this diversity.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="card-icon amber">🎯</div>
+            <h4>Equitable Access</h4>
+            <p>Every learner deserves the opportunity to demonstrate their knowledge without being hindered by assessment format or delivery barriers.</p>
+          </div>
+          <div class="info-card">
+            <div class="card-icon mint">🌐</div>
+            <h4>Digital Contexts</h4>
+            <p>Online and technology-mediated assessments introduce unique accessibility considerations, from screen reader compatibility to cognitive load management.</p>
+          </div>
+          <div class="info-card">
+            <div class="card-icon slate">👥</div>
+            <h4>Diverse Populations</h4>
+            <p>Today's classrooms include English Language Learners, students with IEPs, students with anxiety, and neurodiverse learners — all with valid instructional needs.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box amber-box">
+          <h4>Why This Matters Now</h4>
+          <p>With the rapid expansion of digital learning platforms, educators face increasing pressure to ensure that assessments administered online do not inadvertently disadvantage marginalized groups. IDEA, Section 504, and ADA all have implications for how digital assessments must be designed and delivered.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Introductory Video</div>
+        <h2 class="section-title">Watch: Learner Variability in Action</h2>
+
+        <div class="video-container">
+          <div class="video-placeholder">
+            <div class="play-btn" onclick="alert('Embed your introductory video here using an iframe or HTML5 video tag.')">▶</div>
+            <div class="video-label">Introductory Video: Understanding Diverse Learners<br><small style="opacity:.6;">Embed via iframe or upload to Canva/YouTube</small></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Key Concepts</div>
+        <h2 class="section-title">Foundations of Accessible Assessment</h2>
+
+        <div class="infographic">
+          <div class="infographic-cell"><div class="stat">1 in 5</div><div class="stat-label">Students have a learning disability in the U.S.</div></div>
+          <div class="infographic-cell"><div class="stat">10%</div><div class="stat-label">Of students are English Language Learners</div></div>
+          <div class="infographic-cell"><div class="stat">93%</div><div class="stat-label">Of teachers report insufficient accessibility training</div></div>
+          <div class="infographic-cell"><div class="stat">3x</div><div class="stat-label">More likely to disengage when assessments feel inaccessible</div></div>
+          <div class="infographic-cell"><div class="stat">70%</div><div class="stat-label">Of digital assessments lack WCAG 2.1 compliance</div></div>
+          <div class="infographic-cell"><div class="stat">60+</div><div class="stat-label">Minutes of professional development in this module</div></div>
+        </div>
+
+        <!-- FORMATIVE 1 -->
+        <div class="formative-section">
+          <div class="formative-badge">✏ Formative Assessment #1</div>
+          <h3>Opening Reflection</h3>
+          <p>Before we go further, reflect on your own experience. Consider the diverse learners in your context and the assessment challenges you have encountered.</p>
+          <div class="form-embed-prompt">
+            <div class="form-icon">📝</div>
+            <div>
+              <h5>Reflection Prompt</h5>
+              <p>"What challenges have you experienced when designing digital assessments for diverse learners?"</p>
+            </div>
+            <button class="form-btn" onclick="openFormModal('fa1')">Open Google Form ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="nav-btn prev" onclick="showPage('home', document.querySelector('[data-page=home]'))">← Back to Overview</button>
+        <button class="nav-btn next" onclick="showPage('page2', document.querySelector('[data-page=page2]'))">UDL Principles →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page-page2">
+    <div class="content-page">
+      <div class="page-hero mint-hero" data-num="2">
+        <div class="page-time-badge">⏱ 10–15 min</div>
+        <div class="page-badge">Module 2</div>
+        <h2>Universal Design for Learning (UDL)</h2>
+        <p>Discover the three core principles of UDL and how they transform the way we design digital assessments for all learners.</p>
+      </div>
+      <div class="content-body">
+        <div class="section-label">Framework Overview</div>
+        <h2 class="section-title">What is Universal Design for Learning?</h2>
+        <p class="section-text">Universal Design for Learning (UDL) is a research-based framework developed by CAST that guides educators in designing flexible learning experiences that meet the needs of all learners from the outset. Rather than retrofitting accessibility after the fact, UDL embeds it into the design process itself.</p>
+        <p class="section-text">UDL is organized around three core principles that address the "what," "how," and "why" of learning — directly aligned with distinct brain networks involved in cognition.</p>
+
+        <div class="udl-principles">
+          <div class="principle-card p1" data-num="I">
+            <div class="principle-label">Principle 1 · Recognition Network</div>
+            <h4>Multiple Means of Representation</h4>
+            <p>Present information and content in different ways. Offer alternatives for auditory and visual information. Provide options for comprehension and language.</p>
+          </div>
+          <div class="principle-card p2" data-num="II">
+            <div class="principle-label">Principle 2 · Strategic Network</div>
+            <h4>Multiple Means of Action & Expression</h4>
+            <p>Differentiate how learners navigate and express what they know. Provide options for executive functions, expression, and communication.</p>
+          </div>
+          <div class="principle-card p3" data-num="III">
+            <div class="principle-label">Principle 3 · Affective Network</div>
+            <h4>Multiple Means of Engagement</h4>
+            <p>Stimulate interest and motivation. Provide options for self-regulation, sustaining effort, and recruiting interest in learning.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box mint-box">
+          <h4>UDL and Digital Assessments</h4>
+          <p>When applied to digital assessments, UDL means offering varied question formats (text, audio, video), allowing flexible response modes (typed, recorded, drawn), and designing interfaces that are navigable by keyboard and screen reader — among many other considerations.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Classroom Application</div>
+        <h2 class="section-title">UDL in Practice: Assessment Examples</h2>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="card-icon amber">📄</div>
+            <h4>Representation Example</h4>
+            <p>A quiz prompt is presented both as text and as a read-aloud audio option. Key vocabulary is hyperlinked to a glossary. Instructions use simple, clear language.</p>
+          </div>
+          <div class="info-card">
+            <div class="card-icon mint">🎙</div>
+            <h4>Expression Example</h4>
+            <p>Students may answer open-ended questions via typed text, an audio recording, a video response, or an annotated image — whichever best showcases their understanding.</p>
+          </div>
+          <div class="info-card">
+            <div class="card-icon slate">💡</div>
+            <h4>Engagement Example</h4>
+            <p>Assessment items are connected to real-world scenarios relevant to students' lived experiences. Progress indicators and low-stakes checkpoints reduce anxiety and build self-efficacy.</p>
+          </div>
+        </div>
+
+        <div class="video-container">
+          <div class="video-placeholder">
+            <div class="play-btn" onclick="alert('Embed your UDL explainer video or Canva presentation here.')">▶</div>
+            <div class="video-label">UDL Framework Overview: Embedded Canva Presentation or Video<br><small style="opacity:.6;">Paste your Canva embed code or video iframe below</small></div>
+          </div>
+        </div>
+
+        <!-- FORMATIVE 2 -->
+        <div class="formative-section">
+          <div class="formative-badge">✏ Formative Assessment #2</div>
+          <h3>UDL Reflection Poll</h3>
+          <p>Consider the three UDL principles you just reviewed. Which do you believe is most critical for designing inclusive digital assessments, and why? Share your thinking in the short-response form below.</p>
+          <div class="form-embed-prompt">
+            <div class="form-icon">📝</div>
+            <div>
+              <h5>Short Response Prompt</h5>
+              <p>"Which UDL principle is most important for inclusive digital assessments and why?"</p>
+            </div>
+            <button class="form-btn" onclick="openFormModal('fa2')">Open Google Form ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="nav-btn prev" onclick="showPage('page1', document.querySelector('[data-page=page1]'))">← Introduction</button>
+        <button class="nav-btn next" onclick="showPage('page3', document.querySelector('[data-page=page3]'))">Accessibility Barriers →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page-page3">
+    <div class="content-page">
+      <div class="page-hero slate-hero" data-num="3">
+        <div class="page-time-badge">⏱ 10–15 min</div>
+        <div class="page-badge">Module 3</div>
+        <h2>Accessibility Barriers in Digital Assessments</h2>
+        <p>Examine the most common ways digital assessments fail diverse learners — and what equitable redesign looks like in practice.</p>
+      </div>
+      <div class="content-body">
+        <div class="section-label">Common Barriers</div>
+        <h2 class="section-title">When Digital Assessments Exclude Learners</h2>
+        <p class="section-text">Even well-intentioned digital assessments can inadvertently create barriers that prevent diverse learners from demonstrating their true knowledge. Understanding these barriers is the first step toward removing them.</p>
+
+        <ul class="barrier-list">
+          <li class="barrier-item">
+            <div class="barrier-num">01</div>
+            <div class="barrier-content">
+              <h5>Readability Issues</h5>
+              <p>Complex sentence structures, dense paragraph formatting, and academic vocabulary can shut out English Language Learners and students with reading disabilities. Low contrast text and small fonts create additional visual barriers.</p>
+            </div>
+          </li>
+          <li class="barrier-item">
+            <div class="barrier-num">02</div>
+            <div class="barrier-content">
+              <h5>Cognitive Overload</h5>
+              <p>Cluttered interfaces, too many simultaneous instructions, and time pressure create cognitive overload — particularly for students with ADHD, anxiety, or working memory challenges. Assessment design that piles multiple complex tasks creates unnecessary barriers.</p>
+            </div>
+          </li>
+          <li class="barrier-item">
+            <div class="barrier-num">03</div>
+            <div class="barrier-content">
+              <h5>Navigation Concerns</h5>
+              <p>Assessments that rely on mouse-only navigation, complex drag-and-drop interfaces, or non-sequential question flow create insurmountable barriers for students using assistive technologies such as keyboard navigation or switch access.</p>
+            </div>
+          </li>
+          <li class="barrier-item">
+            <div class="barrier-num">04</div>
+            <div class="barrier-content">
+              <h5>Missing Captioning & Audio Support</h5>
+              <p>Video-based assessments without captions exclude Deaf and hard-of-hearing students. Audio-only content without transcripts creates barriers for ELL students and those in noisy environments or without reliable audio access.</p>
+            </div>
+          </li>
+          <li class="barrier-item">
+            <div class="barrier-num">05</div>
+            <div class="barrier-content">
+              <h5>Single-Mode Response Requirements</h5>
+              <p>Forcing all learners to respond in writing disadvantages students who can demonstrate mastery through other means. A student with dysgraphia may know the answer thoroughly but be unable to express it through typing alone.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Accessibility Checklist</div>
+        <h2 class="section-title">Before You Publish: Check These</h2>
+
+        <ul class="checklist">
+          <li class="check-item"><div class="check-icon">✓</div>Text meets WCAG 2.1 color contrast requirements (4.5:1 ratio for normal text)</li>
+          <li class="check-item"><div class="check-icon">✓</div>All images have descriptive alt-text</li>
+          <li class="check-item"><div class="check-icon">✓</div>Videos include accurate closed captions and transcripts</li>
+          <li class="check-item"><div class="check-icon">✓</div>Assessment is fully navigable via keyboard</li>
+          <li class="check-item"><div class="check-icon">✓</div>Instructions are clear, concise, and chunked</li>
+          <li class="check-item"><div class="check-icon">✓</div>Timing accommodations are built-in or easily applied</li>
+          <li class="check-item"><div class="check-icon">✓</div>Multiple response formats are available where appropriate</li>
+          <li class="check-item"><div class="check-icon">✓</div>Font size is at least 16px; font is readable (sans-serif preferred)</li>
+          <li class="check-item"><div class="check-icon">✓</div>Vocabulary is scaffolded with glossary support</li>
+          <li class="check-item"><div class="check-icon">✓</div>Assessment was reviewed by someone with accessibility expertise</li>
+        </ul>
+
+        <!-- FORMATIVE 3 — SCENARIO ACTIVITY -->
+        <div class="formative-section">
+          <div class="formative-badge">✏ Formative Assessment #3</div>
+          <h3>Scenario-Based Barrier Identification</h3>
+          <p>Read the sample digital assessment description below. Identify all the accessibility barriers you can find, then check your thinking.</p>
+          <div class="scenario-box">
+            <h4>Sample Assessment Scenario</h4>
+            <div class="scenario-text">
+              A middle school science teacher posts a 45-question timed quiz on the class learning management system. All questions are in 10pt gray font on a white background. A key diagram in question 12 has no alt-text. Questions 20–25 require students to drag answers into a table using a mouse. The instructions are 300 words long with no headings. An embedded 5-minute video used in questions 30–32 has no captions. Students have exactly 30 minutes to complete the quiz with no time extension option available.
+            </div>
+            <h4>Which barriers are present? Select all that apply.</h4>
+            <div class="barrier-options">
+              <label class="barrier-opt"><input type="checkbox" id="b1"> Font size and contrast are insufficient, creating visual barriers</label>
+              <label class="barrier-opt"><input type="checkbox" id="b2"> Missing alt-text excludes screen reader users</label>
+              <label class="barrier-opt"><input type="checkbox" id="b3"> Mouse-only interaction excludes keyboard and switch access users</label>
+              <label class="barrier-opt"><input type="checkbox" id="b4"> Lengthy, unformatted instructions create cognitive overload</label>
+              <label class="barrier-opt"><input type="checkbox" id="b5"> Missing captions exclude Deaf/HH students and ELLs</label>
+              <label class="barrier-opt"><input type="checkbox" id="b6"> No timing flexibility creates barriers for students with disabilities</label>
+            </div>
+            <button class="check-answers-btn" onclick="checkScenario()">Check My Answers</button>
+            <div class="feedback-msg" id="scenarioFeedback"></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="nav-btn prev" onclick="showPage('page2', document.querySelector('[data-page=page2]'))">← UDL Principles</button>
+        <button class="nav-btn next" onclick="showPage('page4', document.querySelector('[data-page=page4]'))">Designing Inclusively →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="page" id="page-page4">
+    <div class="content-page">
+      <div class="page-hero navy-hero" data-num="4">
+        <div class="page-time-badge">⏱ 15–20 min</div>
+        <div class="page-badge">Module 4</div>
+        <h2>Designing Inclusive Assessments</h2>
+        <p>Move from identification to action — explore strategies, templates, and redesign approaches for truly equitable digital assessments.</p>
+      </div>
+      <div class="content-body">
+        <div class="section-label">Design Strategies</div>
+        <h2 class="section-title">Building Equity into Assessment Design</h2>
+        <p class="section-text">Designing inclusive digital assessments requires intentional decision-making at every stage — from question writing to platform selection. The following strategies offer concrete entry points for educators ready to transform their assessment practices.</p>
+
+        <div class="strategy-grid">
+          <div class="strategy-card">
+            <div class="s-num">01</div>
+            <h4>Differentiated Response Formats</h4>
+            <p>Offer students the choice to respond via text, audio recording, short video, annotated image, or oral response through a conference. Evaluate using a consistent rubric that focuses on demonstrated understanding, not format.</p>
+          </div>
+          <div class="strategy-card">
+            <div class="s-num">02</div>
+            <h4>Scaffolded Supports</h4>
+            <p>Embed word banks, sentence starters, graphic organizers, and glossary links directly within the assessment. Make these available to all learners to reduce stigma and support productive struggle.</p>
+          </div>
+          <div class="strategy-card">
+            <div class="s-num">03</div>
+            <h4>Accessible Multimedia</h4>
+            <p>Use images with descriptive alt-text, videos with accurate captions and transcripts, and audio content paired with written text. Ensure multimedia adds instructional value rather than increasing cognitive load.</p>
+          </div>
+          <div class="strategy-card">
+            <div class="s-num">04</div>
+            <h4>Flexible Timing Options</h4>
+            <p>Remove unnecessary time pressure from assessments, or build in easy accommodation mechanisms. Consider untimed assessments or time-and-a-half options that can be toggled per student without drawing attention.</p>
+          </div>
+          <div class="strategy-card">
+            <div class="s-num">05</div>
+            <h4>Chunked, Clear Instructions</h4>
+            <p>Break complex instructions into numbered, brief steps. Use headings, white space, and bullet points to reduce cognitive load. Test your instructions with a colleague unfamiliar with your content area.</p>
+          </div>
+          <div class="strategy-card">
+            <div class="s-num">06</div>
+            <h4>Culturally Responsive Framing</h4>
+            <p>Examine assessment scenarios and exemplars for cultural assumptions. Ensure that context, vocabulary, and examples are accessible and relevant to all students, not just dominant cultural groups.</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Implementation Timeline</div>
+        <h2 class="section-title">A Phased Approach to Redesign</h2>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <h5>Phase 1: Audit Existing Assessments (Weeks 1–2)</h5>
+            <p>Use the accessibility checklist from Module 3 to evaluate your current digital assessments. Document barriers and prioritize based on impact and feasibility.</p>
+          </div>
+          <div class="timeline-item">
+            <h5>Phase 2: Select High-Impact Changes (Week 3)</h5>
+            <p>Choose 2–3 high-priority improvements per assessment (e.g., adding captions, enabling alt-text, restructuring instructions). Focus on changes with the greatest equity impact first.</p>
+          </div>
+          <div class="timeline-item">
+            <h5>Phase 3: Redesign and Pilot (Weeks 4–6)</h5>
+            <p>Implement your selected changes and pilot the revised assessment with a small group. Collect qualitative feedback from students, particularly those with identified learning needs.</p>
+          </div>
+          <div class="timeline-item">
+            <h5>Phase 4: Reflect and Iterate (Week 7+)</h5>
+            <p>Analyze pilot data, refine your assessment, and document what worked. Share findings with your department and develop a sustainable review cycle for all digital assessments.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box slate-box">
+          <h4>📥 Downloadable Resources</h4>
+          <p>Below you would embed or link downloadable Canva-designed templates: an Inclusive Assessment Design Template, an Accessibility Audit Worksheet, and an Assessment Redesign Checklist. Create these in Canva and add the shareable/download links here.</p>
+        </div>
+
+        <!-- FORMATIVE 4 -->
+        <div class="formative-section">
+          <div class="formative-badge">✏ Formative Assessment #4</div>
+          <h3>Assessment Redesign Activity</h3>
+          <p>Think of one assessment you currently use in your practice. Using the strategies from this module, identify at least two changes you would make to improve its accessibility and inclusivity. Submit your redesign plan using the form below.</p>
+          <div class="form-embed-prompt">
+            <div class="form-icon">🛠</div>
+            <div>
+              <h5>Assessment Redesign Submission</h5>
+              <p>Describe your current assessment, identify the barriers, and explain your redesign strategies.</p>
+            </div>
+            <button class="form-btn" onclick="openFormModal('fa4')">Open Google Form ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="nav-btn prev" onclick="showPage('page3', document.querySelector('[data-page=page3]'))">← Accessibility Barriers</button>
+        <button class="nav-btn next" onclick="showPage('page5', document.querySelector('[data-page=page5]'))">Final Reflection →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 5 -->
+  <div class="page" id="page-page5">
+    <div class="content-page">
+      <div class="page-hero final-hero" data-num="5">
+        <div class="page-time-badge">⏱ 10–15 min</div>
+        <div class="page-badge">Module 5 · Final</div>
+        <h2>Final Reflection & Summative Assessment</h2>
+        <p>Synthesize your learning, craft your implementation plan, and demonstrate your mastery of inclusive digital assessment design.</p>
+      </div>
+      <div class="content-body">
+        <div class="section-label">Module Summary</div>
+        <h2 class="section-title">Key Takeaways</h2>
+        <p class="section-text">You have now completed all five modules of this professional development experience. Let's review what you have explored and the actions you are ready to take.</p>
+
+        <div class="takeaway-grid">
+          <div class="takeaway-card">
+            <div class="t-icon">📖</div>
+            <h4>Inclusive Assessment Foundations</h4>
+            <p>Assessment equity requires proactive, not reactive, design that anticipates learner variability.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="t-icon">🔵</div>
+            <h4>UDL Framework</h4>
+            <p>Three principles — Representation, Action & Expression, Engagement — guide equitable assessment design.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="t-icon">🚧</div>
+            <h4>Barrier Identification</h4>
+            <p>Common barriers include readability, cognitive overload, navigation, and missing multimedia supports.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="t-icon">🎨</div>
+            <h4>Redesign Strategies</h4>
+            <p>Differentiated formats, scaffolded supports, and phased implementation make equity achievable and sustainable.</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Final Reflection</div>
+        <h2 class="section-title">Your Implementation Plan</h2>
+        <p class="section-text">Reflection is the bridge between professional development and professional practice. Take a few minutes to write thoughtfully before completing the summative assessment.</p>
+
+        <div class="reflection-box">
+          <h3>Reflection Prompt</h3>
+          <p>"How has this module influenced your understanding of inclusive digital assessment design, and what specific strategies do you plan to implement in your instructional practice?"</p>
+          <textarea class="reflect-input" id="reflectionText" placeholder="Begin your reflection here... Consider: Which concept challenged your thinking most? Which strategy will you implement first? What support do you need?"></textarea>
+          <br>
+          <button class="submit-reflect-btn" onclick="saveReflection()">Save My Reflection ✓</button>
+          <div id="reflectionSaved" style="display:none;margin-top:12px;font-size:13px;color:#2a6a55;font-weight:600;">✓ Reflection saved! Proceed to the summative assessment below.</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-label">Summative Assessment</div>
+        <h2 class="section-title">Final Assessment</h2>
+        <p class="section-text">The summative assessment includes 5–10 multiple-choice questions, a short reflection response, and an implementation planning question. Complete all sections to receive your certificate of completion.</p>
+
+        <div class="formative-section" style="background: linear-gradient(135deg, #2a3040, var(--navy));">
+          <div class="formative-badge" style="background: var(--mint-dark);">🎓 Summative Assessment</div>
+          <h3>Final Module Assessment</h3>
+          <p>This assessment measures your mastery of all five learning objectives. It includes multiple-choice questions, a short reflection response, and an implementation planning question. Estimated time: 10–15 minutes.</p>
+          <div class="form-embed-prompt">
+            <div class="form-icon">🏆</div>
+            <div>
+              <h5>Complete Your Final Assessment</h5>
+              <p>5–10 multiple-choice · Short reflection · Implementation planning question</p>
+            </div>
+            <button class="form-btn" style="background:var(--mint-dark);" onclick="openFormModal('summative')">Begin Assessment ↗</button>
+          </div>
+        </div>
+
+        <div class="highlight-box mint-box" style="margin-top:32px;">
+          <h4>🎉 Thank You for Completing This Module</h4>
+          <p>Your commitment to designing inclusive digital assessments will directly benefit your students. Remember: inclusive design isn't a destination — it's an ongoing practice of reflection, listening, and redesign. Return to this module anytime as a resource as you continue your journey.</p>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="nav-btn prev" onclick="showPage('page4', document.querySelector('[data-page=page4]'))">← Designing Inclusively</button>
+        <button class="nav-btn next" style="background: var(--mint-dark);" onclick="showPage('home', document.querySelector('[data-page=home]'))">↩ Return to Overview</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const pages = ['home','page1','page2','page3','page4','page5'];
+  let completedPages = new Set();
+  let currentPage = 'home';
+
+  function showPage(pageId, navEl) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target
+    const target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('active');
+
+    // Update nav
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (navEl) navEl.classList.add('active');
+    else {
+      const found = document.querySelector('[data-page=' + pageId + ']');
+      if (found) found.classList.add('active');
+    }
+
+    currentPage = pageId;
+    if (pageId !== 'home') completedPages.add(pageId);
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeSidebar();
+  }
+
+  function updateProgress() {
+    const total = 5;
+    const done = completedPages.size;
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' of ' + total + ' modules complete';
+  }
+
+  function checkScenario() {
+    const allCorrect = ['b1','b2','b3','b4','b5','b6'];
+    const checked = allCorrect.filter(id => document.getElementById(id).checked);
+    const fb = document.getElementById('scenarioFeedback');
+    fb.classList.add('show');
+    if (checked.length === 6) {
+      fb.className = 'feedback-msg show correct';
+      fb.textContent = '✓ Excellent! You correctly identified all six accessibility barriers in the scenario. This assessment has significant equity issues that would prevent many learners from demonstrating their true knowledge.';
+    } else if (checked.length >= 3) {
+      fb.className = 'feedback-msg show partial';
+      fb.textContent = '⚠ Good effort! You identified ' + checked.length + ' of 6 barriers. Review the ones you missed — all six represent real equity concerns: font/contrast issues, missing alt-text, mouse-only interaction, cognitive overload from instructions, missing captions, and inflexible timing.';
+    } else {
+      fb.className = 'feedback-msg show partial';
+      fb.textContent = '↩ Take another look — this assessment has at least 6 distinct accessibility barriers. Re-read the scenario and consider each type of learner who might be taking it: a Deaf student, a keyboard user, an ELL student, a student with ADHD.';
+    }
+  }
+
+  function saveReflection() {
+    const txt = document.getElementById('reflectionText').value.trim();
+    if (txt.length > 20) {
+      document.getElementById('reflectionSaved').style.display = 'block';
+    } else {
+      alert('Please write a more detailed reflection before saving.');
+    }
+  }
+
+  function toggleSidebar() {
+    const sb = document.getElementById('sidebar');
+    const ov = document.getElementById('overlay');
+    sb.classList.toggle('open');
+    ov.classList.toggle('show');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  // ─── FORM MODAL ───
+  let currentFormUrl = 'https://forms.google.com';
+
+  const formData = {
+    fa1: {
+      badge: '✏ Formative Assessment #1',
+      title: 'Opening Reflection',
+      subtitle: 'Module 1 · Introduction to Inclusive Assessment',
+      prompt: '"What challenges have you experienced when designing digital assessments for diverse learners?"',
+      instructions: 'Reflect on your own instructional context. There are no right or wrong answers — this is your opportunity to connect the content to your real experience. Click below to open the Google Form in a new tab.',
+      url: 'https://forms.google.com'
+    },
+    fa2: {
+      badge: '✏ Formative Assessment #2',
+      title: 'UDL Reflection Poll',
+      subtitle: 'Module 2 · Universal Design for Learning',
+      prompt: '"Which UDL principle do you believe is most important for inclusive digital assessments and why?"',
+      instructions: 'Consider the three UDL principles you just reviewed. Share your thinking in a short-response form. Your response should be at least 2–3 sentences and include a specific example from your practice.',
+      url: 'https://forms.google.com'
+    },
+    fa4: {
+      badge: '✏ Formative Assessment #4',
+      title: 'Assessment Redesign Activity',
+      subtitle: 'Module 4 · Designing Inclusive Assessments',
+      prompt: 'Describe one assessment you currently use, identify at least two accessibility barriers it contains, and explain the specific redesign changes you would make using the strategies from this module.',
+      instructions: 'Think of a real assessment from your practice. Be specific about the barriers and your proposed solutions. Reference at least one strategy from Module 4 in your response.',
+      url: 'https://forms.google.com'
+    },
+    summative: {
+      badge: '🎓 Summative Assessment',
+      title: 'Final Module Assessment',
+      subtitle: 'Module 5 · Final Reflection & Assessment',
+      prompt: 'Complete all sections: 5–10 multiple-choice questions, a short reflection response, and an implementation planning question.',
+      instructions: 'This is your final assessment. Make sure you have completed the written reflection above before beginning. The form will open in a new tab — take your time and draw on everything you have learned across all five modules.',
+      url: 'https://forms.google.com'
+    }
+  };
+
+  function openFormModal(formKey) {
+    const d = formData[formKey];
+    if (!d) return;
+    currentFormUrl = d.url;
+    document.getElementById('modalBadge').textContent = d.badge;
+    document.getElementById('modalTitle').textContent = d.title;
+    document.getElementById('modalSubtitle').textContent = d.subtitle;
+    document.getElementById('modalPrompt').textContent = d.prompt;
+    document.getElementById('modalInstructions').textContent = d.instructions;
+
+    // Color the badge based on type
+    const badge = document.getElementById('modalBadge');
+    badge.style.background = formKey === 'summative' ? 'var(--mint-dark)' : 'var(--amber)';
+
+    document.getElementById('formModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFormModal(e) {
+    if (e && e.target !== document.getElementById('formModal')) return;
+    document.getElementById('formModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openFormUrl() {
+    window.open(currentFormUrl, '_blank');
+    // Close modal after brief delay so user sees button press
+    setTimeout(() => {
+      document.getElementById('formModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }, 300);
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('formModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+</body>
+</html>
