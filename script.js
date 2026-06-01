@@ -80,7 +80,7 @@
       subtitle: 'Module 1 · Introduction to Inclusive Assessment',
       prompt: '"What challenges have you experienced when designing digital assessments for diverse learners?"',
       instructions: 'Reflect on your own instructional context. There are no right or wrong answers — this is your opportunity to connect the content to your real experience. Click below to open the Google Form in a new tab.',
-      url: 'https://docs.google.com/forms/d/e/1FAIpQLScRL3NBcREpdea79DRqEK4AxX48SsuUZiOmPB2t47IS5jzOKQ/viewform?usp=publish-editor'
+      url: 'https://forms.gle/e63xPcoAdL5ygJDa8'
     },
     fa2: {
       badge: '✏ Formative Assessment #2',
@@ -88,7 +88,7 @@
       subtitle: 'Module 2 · Universal Design for Learning',
       prompt: '"Which UDL principle do you believe is most important for inclusive digital assessments and why?"',
       instructions: 'Consider the three UDL principles you just reviewed. Share your thinking in a short-response form. Your response should be at least 2–3 sentences and include a specific example from your practice.',
-      url: 'https://docs.google.com/forms/d/e/1FAIpQLSdctTLbgkKedUNr29HHZsNIar5IHXE5KGwQkUeSnyg7P5-0QA/viewform?usp=publish-editor'
+      url: 'https://forms.gle/RiDoGj7zDjhshas57'
     },
     fa4: {
       badge: '✏ Formative Assessment #4',
@@ -96,7 +96,7 @@
       subtitle: 'Module 4 · Designing Inclusive Assessments',
       prompt: 'Describe one assessment you currently use, identify at least two accessibility barriers it contains, and explain the specific redesign changes you would make using the strategies from this module.',
       instructions: 'Think of a real assessment from your practice. Be specific about the barriers and your proposed solutions. Reference at least one strategy from Module 4 in your response.',
-      url: 'https://docs.google.com/forms/d/e/1FAIpQLSfnSsgLhtWxaMndrIi0aPz70Mus-EhJNBpZzJM43CXda7K4hw/viewform?usp=publish-editor'
+      url: 'https://forms.gle/VzZKiTCAmbPDsyNT8'
     },
     summative: {
       badge: '🎓 Summative Assessment',
@@ -104,7 +104,7 @@
       subtitle: 'Module 5 · Final Reflection & Assessment',
       prompt: 'Complete all sections: 5–10 multiple-choice questions, a short reflection response, and an implementation planning question.',
       instructions: 'This is your final assessment. Make sure you have completed the written reflection above before beginning. The form will open in a new tab — take your time and draw on everything you have learned across all five modules.',
-      url: 'https://docs.google.com/forms/d/e/1FAIpQLSeh2oIe5W5Rl7apiEDIrVavfov8m2R9Gpxy7z90SPPNr74jng/viewform?usp=publish-editor'
+      url: 'https://forms.gle/PTANXzDTQFxB81E4A'
     }
   };
 
@@ -148,3 +148,20 @@
       document.body.style.overflow = '';
     }
   });
+
+  // Download
+function forceDownload(url, filename) {
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      const blobURL = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobURL;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobURL);
+    })
+    .catch(() => window.open(url, '_blank')); // Fallback to open in new tab if blocked
+}
