@@ -23,7 +23,7 @@
     overflow-x: hidden;
   }
 
-  /* ─── SIDEBAR NAV ─── */
+  /* NAVIGATION */
   .sidebar {
     position: fixed;
     left: 0; top: 0;
@@ -150,7 +150,7 @@
     margin-top: 6px;
   }
 
-  /* ─── HAMBURGER ─── */
+  /* HAMBURGER */
   .hamburger {
     display: none;
     position: fixed;
@@ -176,17 +176,17 @@
     transition: all 0.3s;
   }
 
-  /* ─── MAIN CONTENT ─── */
+  /* MAIN */
   .main {
     margin-left: 260px;
     min-height: 100vh;
   }
 
-  /* ─── PAGES ─── */
+  /* PAGES */
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ─── HERO ─── */
+  /* HERO STUFF */
   .hero {
     min-height: 100vh;
     background: var(--navy);
@@ -363,7 +363,7 @@
     margin-top: 5px;
   }
 
-  /* ─── CONTENT PAGES ─── */
+  /* CONTENT PAGES */
   .content-page {
     min-height: 100vh;
     padding: 0;
@@ -440,7 +440,7 @@
     padding: 56px 80px 80px;
   }
 
-  /* ─── CARD COMPONENTS ─── */
+  /* CARDS */
   .section-label {
     font-size: 11px;
     font-weight: 600;
@@ -515,7 +515,7 @@
     line-height: 1.6;
   }
 
-  /* ─── HIGHLIGHT BOX ─── */
+  /* HIGHLIGHT BOX */
   .highlight-box {
     border-radius: 16px;
     padding: 28px 32px;
@@ -551,7 +551,7 @@
     line-height: 1.7;
   }
 
-  /* ─── UDL PRINCIPLES ─── */
+  /* UDL PRINCIPLES */
   .udl-principles {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -603,7 +603,7 @@
     margin-bottom: 8px;
   }
 
-  /* ─── BARRIER LIST ─── */
+  /* BARRIER LIST */
   .barrier-list {
     list-style: none;
     display: flex;
@@ -647,7 +647,7 @@
     line-height: 1.55;
   }
 
-  /* ─── CHECKLIST ─── */
+  /* CHECKLIST */
   .checklist {
     list-style: none;
     display: flex;
@@ -677,7 +677,7 @@
     font-weight: 700;
   }
 
-  /* ─── STRATEGY CARDS ─── */
+  /* STRATEGY CARDS */
   .strategy-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -715,7 +715,7 @@
     line-height: 1.6;
   }
 
-  /* ─── FORMATIVE ASSESSMENT ─── */
+  /* FORMATIVE ASSESSMENT */
   .formative-section {
     background: var(--navy);
     border-radius: 20px;
@@ -805,7 +805,7 @@
 
   .form-btn:hover { background: var(--amber-light); }
 
-  /* ─── VIDEO EMBED ─── */
+  /* EMBEDDED VIDEOS */
   .video-container {
     background: var(--navy);
     border-radius: 18px;
@@ -842,14 +842,14 @@
     text-align: center;
   }
 
-  /* ─── DIVIDER ─── */
+  /* DIVIDERS */
   .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(66,78,99,0.12), transparent);
     margin: 40px 0;
   }
 
-  /* ─── FINAL PAGE ─── */
+  /* FINAL PAGE */
   .takeaway-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -890,7 +890,7 @@
     line-height: 1.5;
   }
 
-  /* ─── REFLECTION BOX ─── */
+  /* REFLECTION BOX */
   .reflection-box {
     background: linear-gradient(135deg, var(--cream) 0%, rgba(246,215,167,0.5) 100%);
     border-radius: 20px;
@@ -950,7 +950,7 @@
     transform: translateY(-2px);
   }
 
-  /* ─── NEXT PAGE BTN ─── */
+  /* NEXT PAGE BUTTON */
   .page-nav {
     display: flex;
     align-items: center;
@@ -991,7 +991,7 @@
     box-shadow: 0 8px 20px rgba(200,125,58,0.35);
   }
 
-  /* ─── SCENARIO ACTIVITY ─── */
+  /* SCENARIO ACTIVITY */
   .scenario-box {
     background: var(--white);
     border: 1.5px solid rgba(66,78,99,0.1);
@@ -1070,7 +1070,7 @@
   .feedback-msg.correct { background: rgba(192,225,210,0.4); color: #2a6a55; border: 1px solid var(--mint); }
   .feedback-msg.partial { background: rgba(246,215,167,0.4); color: #7a5a20; border: 1px solid var(--cream-dark); }
 
-  /* ─── TIMELINE ─── */
+  /* TIMELINE */
   .timeline {
     position: relative;
     padding-left: 32px;
@@ -1116,7 +1116,7 @@
     line-height: 1.6;
   }
 
-  /* ─── INFOGRAPHIC ─── */
+  /* INFOGRAPHICS */
   .infographic {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1153,7 +1153,7 @@
     line-height: 1.4;
   }
 
-  /* ─── RESPONSIVE ─── */
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     .sidebar { transform: translateX(-260px); }
     .sidebar.open { transform: translateX(0); }
@@ -1175,7 +1175,7 @@
     .page-hero::after { display: none; }
   }
 
-  /* ─── FORM MODAL ─── */
+  /* FORM MODAL */
   .form-modal-overlay {
     display: none;
     position: fixed;
@@ -1350,7 +1350,7 @@
     padding-top: 2px;
   }
 
-  /* ─── ANIMATIONS ─── */
+  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }

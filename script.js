@@ -1,10 +1,11 @@
-  const pages = ['home','page1','page2','page3','page4','page5'];
+  const pages = ['home','page1','page2','page3','page4','page5','page6'];
   let completedPages = new Set();
   let currentPage = 'home';
 
   function showPage(pageId, navEl) {
     // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    
     // Show target
     const target = document.getElementById('page-' + pageId);
     if (target) target.classList.add('active');
@@ -70,7 +71,7 @@
     document.getElementById('overlay').classList.remove('show');
   }
 
-  // ─── FORM MODAL ───
+  // FORMS
   let currentFormUrl = 'https://forms.google.com';
 
   const formData = {
@@ -118,7 +119,7 @@
     document.getElementById('modalPrompt').textContent = d.prompt;
     document.getElementById('modalInstructions').textContent = d.instructions;
 
-    // Color the badge based on type
+    // Color OF BADGES
     const badge = document.getElementById('modalBadge');
     badge.style.background = formKey === 'summative' ? 'var(--mint-dark)' : 'var(--amber)';
 
@@ -134,14 +135,14 @@
 
   function openFormUrl() {
     window.open(currentFormUrl, '_blank');
-    // Close modal after brief delay so user sees button press
+   
     setTimeout(() => {
       document.getElementById('formModal').classList.remove('open');
       document.body.style.overflow = '';
     }, 300);
   }
 
-  // Close on Escape key
+  // Escape key
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       document.getElementById('formModal').classList.remove('open');
@@ -149,7 +150,7 @@
     }
   });
 
-  // Download
+  // Download LINKS
 function forceDownload(url, filename) {
   fetch(url)
     .then(response => response.blob())
@@ -163,5 +164,5 @@ function forceDownload(url, filename) {
       document.body.removeChild(link);
       URL.revokeObjectURL(blobURL);
     })
-    .catch(() => window.open(url, '_blank')); // Fallback to open in new tab if blocked
+    .catch(() => window.open(url, '_blank')); 
 }

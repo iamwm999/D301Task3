@@ -32,12 +32,12 @@ link sheets to google forms
       <span class="nav-time">5 min</span>
     </a>
     <a class="nav-item" data-page="page1" onclick="showPage('page1', this)">
-      <div class="nav-icon">📖</div>
+      <div class="nav-icon">📕</div>
       <span class="nav-label">Introduction to Inclusive Assessment</span>
       <span class="nav-time">15 min</span>
     </a>
     <a class="nav-item" data-page="page2" onclick="showPage('page2', this)">
-      <div class="nav-icon">🔵</div>
+      <div class="nav-icon">✏️</div>
       <span class="nav-label">UDL Principles</span>
       <span class="nav-time">15 min</span>
     </a>
@@ -55,6 +55,11 @@ link sheets to google forms
       <div class="nav-icon">🎓</div>
       <span class="nav-label">Final Reflection & Assessment</span>
       <span class="nav-time">15 min</span>
+    </a>
+    <a class="nav-item" data-page="page6" onclick="showPage('page6', this)">
+      <div class="nav-icon">📚</div>
+      <span class="nav-label">Resources</span>
+      <span class="nav-time">10 min</span>
     </a>
   </div>
   <div class="sidebar-footer">
@@ -98,7 +103,6 @@ link sheets to google forms
   <span></span><span></span><span></span>
 </button>
 
-<!-- MAIN -->
 <main class="main">
 
   <!-- HOME PAGE -->
@@ -561,7 +565,7 @@ link sheets to google forms
       <div class="content-body">
         <div class="section-label">Module Summary</div>
         <h2 class="section-title">Key Takeaways</h2>
-        <p class="section-text">Congratulations! You have completed all five modules of this professional development journey. Let’s look back at what you achieved and the actions you’re ready to take.</p>
+        <p class="section-text">Let’s look back at what you achieved.</p>
 
         <div class="takeaway-grid">
           <div class="takeaway-card">
@@ -588,9 +592,45 @@ link sheets to google forms
 
         <div class="divider"></div>
 
+        <div class="section-label">Summative Assessment</div>
+        <h2 class="section-title">Final Assessment</h2>
+        <p class="section-text">The summative assessment includes multiple-choice questions, a short reflection response, and an implementation planning question. Complete all sections to receive your certificate of completion.</p>
+
+        <div class="formative-section" style="background: linear-gradient(135deg, #2a3040, var(--navy));">
+          <div class="formative-badge" style="background: var(--mint-dark);">🎓 Summative Assessment</div>
+          <h3>Final Module Assessment</h3>
+          <p>This assessment measures your mastery of all five learning objectives. It includes multiple-choice questions, a short reflection response, and an implementation planning question. Estimated time: 10–15 minutes.</p>
+          <div class="form-embed-prompt">
+            <div class="form-icon">🏆</div>
+            <div>
+              <h5>Complete Your Final Assessment</h5>
+              <p>multiple-choice · Short reflection · Implementation planning question</p>
+            </div>
+            <button class="form-btn" style="background:var(--mint-dark);" onclick="openFormModal('summative')">Begin Assessment ↗</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-nav">
+        <button class="nav-btn prev" onclick="showPage('page4', document.querySelector('[data-page=page4]'))">← Designing Inclusively</button>
+        <button class="nav-btn next" onclick="showPage('page6', document.querySelector('[data-page=page6]'))">Resources →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6 -->
+  <div class="page" id="page-page6">
+    <div class="content-page">
+      <div class="page-hero final-hero" data-num="6">
+        <div class="page-time-badge">⏱ 10–15 min</div>
+        <div class="page-badge">Module 6 · Resources</div>
+        <h2>Thank You!</h2>
+        <p>Congratulations! You have completed all five modules of this professional development journey. Let’s take a look at the actions you’re ready to take with downloadable resources.</p>
+      </div>
+      <div class="content-body">
         <div class="section-label">Extra Practice</div>
         <h2 class="section-title">Exploring Resources</h2>
-        <p class="section-text">Before completing the summative assessment, take a few minutes to explore the clickable and downloadable resources below to deepen your understanding of designing inclusive digital assessments for diverse learners.</p>
+        <p class="section-text">Take a few minutes to explore the clickable and downloadable resources below to deepen your understanding of designing inclusive digital assessments for diverse learners.</p>
 
         <div class="highlight-box slate-box">
           <h4>Resources</h4>
@@ -627,23 +667,6 @@ link sheets to google forms
 
         <div class="divider"></div>
 
-        <div class="section-label">Summative Assessment</div>
-        <h2 class="section-title">Final Assessment</h2>
-        <p class="section-text">The summative assessment includes multiple-choice questions, a short reflection response, and an implementation planning question. Complete all sections to receive your certificate of completion.</p>
-
-        <div class="formative-section" style="background: linear-gradient(135deg, #2a3040, var(--navy));">
-          <div class="formative-badge" style="background: var(--mint-dark);">🎓 Summative Assessment</div>
-          <h3>Final Module Assessment</h3>
-          <p>This assessment measures your mastery of all five learning objectives. It includes multiple-choice questions, a short reflection response, and an implementation planning question. Estimated time: 10–15 minutes.</p>
-          <div class="form-embed-prompt">
-            <div class="form-icon">🏆</div>
-            <div>
-              <h5>Complete Your Final Assessment</h5>
-              <p>multiple-choice · Short reflection · Implementation planning question</p>
-            </div>
-            <button class="form-btn" style="background:var(--mint-dark);" onclick="openFormModal('summative')">Begin Assessment ↗</button>
-          </div>
-        </div>
 
         <div class="highlight-box mint-box" style="margin-top:32px;">
           <h4> Thank You for Completing This Module</h4>
@@ -651,13 +674,11 @@ link sheets to google forms
         </div>
       </div>
       <div class="page-nav">
-        <button class="nav-btn prev" onclick="showPage('page4', document.querySelector('[data-page=page4]'))">← Designing Inclusively</button>
+        <button class="nav-btn prev" onclick="showPage('page5', document.querySelector('[data-page=page5]'))">← Final Reflection</button>
         <button class="nav-btn next" style="background: var(--mint-dark);" onclick="showPage('home', document.querySelector('[data-page=home]'))">↩ Return to Overview</button>
       </div>
     </div>
   </div>
-
-
 </main>
 </body>
 </html>
