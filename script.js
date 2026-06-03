@@ -26,7 +26,7 @@
   }
 
   function updateProgress() {
-    const total = 5;
+    const total = 6;
     const done = completedPages.size;
     const pct = Math.round((done / total) * 100);
     document.getElementById('progressFill').style.width = pct + '%';
