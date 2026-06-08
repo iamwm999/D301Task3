@@ -102,11 +102,19 @@
     summative: {
       badge: '🎓 Summative Assessment',
       title: 'Final Module Assessment',
-      subtitle: 'Module 5 · Final Reflection & Assessment',
-      prompt: 'Complete all sections: 5–10 multiple-choice questions, a short reflection response, and an implementation planning question.',
+      subtitle: 'Module 5 · Final Assessment',
+      prompt: 'Complete all sections: multiple-choice questions, a short reflection response, and an implementation planning question.',
       instructions: 'This is your final assessment. Make sure you have completed the written reflection above before beginning. The form will open in a new tab — take your time and draw on everything you have learned across all five modules.',
       url: 'https://forms.gle/PTANXzDTQFxB81E4A'
-    }
+    },
+    reflect: {
+      badge: 'Final Reflection',
+      title: 'Module Experience Questionnaire',
+      subtitle: 'Module 6 · Final Reflection & Resources',
+      prompt: 'Complete all short answer questions!',
+      instructions: 'This is a final reflection activity designed to collect data about module navigation, engagement, pacing, accessibility, and overall learning experience.',
+      url: 'https://forms.gle/LD8ZWbN6wpqWLxG99'
+    }    
   };
 
   function openFormModal(formKey) {
